@@ -16,20 +16,19 @@ phases:
       - login=$(aws ecr get-login)
       - login=$(echo $login | sed 's/-e none/ /g' | tee)
       - echo $login | bash
-      - IMAGE_URI=$(cat imagedefinitions.json | jq '.[] .name')
+      - IMAGE_URI=$(cat imagedefinitions.json | jq '.[] .imageUri')
   build:
     commands:
-      - docker build -t "${IMAGE_URI}" .
-      - docker tag "${IMAGE_URI}" "${IMAGE_URI}"
-  post_build:
-    commands:
-      - docker push "${IMAGE_URI}"
       - cd terraform
       - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -e PROJ_NAME=$PROJ_NAME $terraformImage"
       - $dockerterraform init 
       - $dockerterraform workspace select $STAGE || $dockerterraform workspace new $STAGE
       - $dockerterraform plan -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
       - $dockerterraform apply -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
+  post_build:
+    commands:
+      - echo "DONE!!!!"
+    
 artifacts:
   files: 
     - imagedefinitions.json
