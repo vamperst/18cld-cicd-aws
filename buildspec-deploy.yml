@@ -9,24 +9,27 @@ phases:
       - terraformImage="hashicorp/terraform:0.11.14"
       - docker pull $terraformImage
       - PROJ_NAME="$PROJETCT_NAME"
+      - mkdir terraform/.aws && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.aws/credentials terraform/.aws/
+      - mkdir terraform/.ssh && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.ssh/fiap-18cld.pem terraform/.ssh/ 
   pre_build:
     commands:
       - login=$(aws ecr get-login)
       - login=$(echo $login | sed 's/-e none/ /g' | tee)
       - echo $login | bash
-      - TAG="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-      - REPOSITORY_URI="$ECR_ADDRESS"
-      - IMAGE_URI="${REPOSITORY_URI}:${TAG}"
+      - IMAGE_URI=$(cat imagedefinitions.json | jq '.[] .name')
   build:
     commands:
       - docker build -t "${IMAGE_URI}" .
       - docker tag "${IMAGE_URI}" "${IMAGE_URI}"
   post_build:
     commands:
-      - docker push "${REPOSITORY_URI}:${TAG}"
-      - printf '[{"name":"%s","imageUri":"%s"}]' "$PROJECT_NAME" "$IMAGE_URI" > imagedefinitions.json
-      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8 > githash
+      - docker push "${IMAGE_URI}"
+      - cd terraform
+      - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -e PROJ_NAME=$PROJ_NAME $terraformImage"
+      - $dockerterraform init 
+      - $dockerterraform workspace select $STAGE || $dockerterraform workspace new $STAGE
+      - $dockerterraform plan -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
+      - $dockerterraform apply -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
 artifacts:
   files: 
     - imagedefinitions.json
-    - githash
