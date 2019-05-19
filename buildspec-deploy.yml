@@ -24,7 +24,7 @@ phases:
       - $dockerterraform init 
       - $dockerterraform workspace select $STAGE || $dockerterraform workspace new $STAGE
       - $dockerterraform plan -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
-      - $dockerterraform apply -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
+      - $dockerterraform apply -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE) -auto-approve
   post_build:
     commands:
       - echo "DONE!!!!"
