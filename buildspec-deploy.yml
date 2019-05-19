@@ -3,8 +3,12 @@ phases:
   install: 
     runtime-versions:
       docker: 18
-    commands:       
-      - PROJ_NAME="$PROJECT_NAME"
+    commands: 
+      - apt-get update -y
+      - apt-get install -y jq
+      - terraformImage="hashicorp/terraform:0.11.14"
+      - docker pull $terraformImage
+      - PROJ_NAME="$PROJETCT_NAME"
   pre_build:
     commands:
       - login=$(aws ecr get-login)
@@ -20,7 +24,7 @@ phases:
   post_build:
     commands:
       - docker push "${REPOSITORY_URI}:${TAG}"
-      - printf '[{"name":"%s","imageUri":"%s"}]' "$PROJ_NAME" "$IMAGE_URI" > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$PROJECT_NAME" "$IMAGE_URI" > imagedefinitions.json
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8 > githash
 artifacts:
   files: 
