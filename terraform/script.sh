@@ -22,7 +22,7 @@ login=$(echo $login | sed 's/-e none/ /g' | tee)
 echo $login | bash
 
 docker run -d -p 3000:3000 --restart on-failure $imageUri
-echo "Deployed $imageUri"
+echo "Deployed $imageUri =)"
 
 
 
