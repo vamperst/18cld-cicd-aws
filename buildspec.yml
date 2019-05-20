@@ -22,8 +22,6 @@ phases:
       - docker push "${REPOSITORY_URI}:${TAG}"
       - printf '[{"name":"%s","imageUri":"%s"}]' "$PROJ_NAME" "$IMAGE_URI" > imagedefinitions.json
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8 > githash
-      - zip -r foo.zip .
-      - aws s3 cp foo.zip s3://18cld-teste-prod/test-devops-fiap/prod/imagedefinitions.zip
 artifacts:
   files: 
     - imagedefinitions.json
