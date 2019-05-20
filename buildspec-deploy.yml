@@ -19,6 +19,7 @@ phases:
       - IMAGE_URI=$(cat imagedefinitions.json | jq '.[] .imageUri')
   build:
     commands:
+      - cp imagedefinitions.json terraform/
       - cd terraform
       - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage"
       - $dockerterraform init 

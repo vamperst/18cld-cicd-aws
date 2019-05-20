@@ -12,9 +12,9 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo systemctl restart docker
 
-sudo apt-get install jq
-name=$(cat imagedefinitions.json | jq '.[] .name')
-imageUri=$(cat imagedefinitions.json | jq '.[] .imageUri')
+sudo apt-get install jq -y
+name=$(cat /tmp/imagedefinitions.json | jq '.[] .name')
+imageUri=$(cat /tmp/imagedefinitions.json | jq '.[] .imageUri')
 
 
 login=$(aws ecr get-login)

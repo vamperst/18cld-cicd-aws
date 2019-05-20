@@ -71,6 +71,11 @@ resource "aws_instance" "web" {
     destination = "/tmp/script.sh"
   }
 
+  provisioner "file" {
+    source      = "imagedefinitions.json"
+    destination = "/tmp/imagedefinitions.json"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/script.sh",
