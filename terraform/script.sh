@@ -20,7 +20,7 @@ export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 sudo locale-gen "en_US.UTF-8"
 sudo pip3 install awscli
-sudo apt install awscli
+sudo apt install awscli -y
 login=$(aws ecr get-login)
 login=$(echo $login | sed 's/-e none/ /g' | tee)
 echo $login | bash
