@@ -13,8 +13,8 @@ sudo usermod -aG docker $USER
 sudo systemctl restart docker
 
 sudo apt-get install jq -y
-name=$(cat /tmp/imagedefinitions.json | jq '.[] .name')
-imageUri=$(cat /tmp/imagedefinitions.json | jq '.[] .imageUri')
+name=$(cat /tmp/imagedefinitions.json | jq '.[] .name' --raw-output)
+imageUri=$(cat /tmp/imagedefinitions.json | jq '.[] .imageUri' --raw-output)
 
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -23,9 +23,9 @@ sudo pip3 install awscli
 sudo apt install awscli -y
 login=$(aws ecr get-login)
 login=$(echo $login | sed 's/-e none/ /g' | tee)
-echo $login | bash
+echo $login | sudo bash
 
-docker run -d -p 3000:3000 --restart on-failure $imageUri
+sudo docker run -d -p 3000:3000 --restart on-failure $imageUri
 echo "Deployed $imageUri =)"
 
 
