@@ -78,7 +78,7 @@ resource "aws_instance" "web" {
 
   provisioner "file" {
     source      = "/root/.aws/config"
-    destination = "/home/ubuntu/.aws/config"
+    destination = "/tmp/config"
   }
 
   provisioner "remote-exec" {

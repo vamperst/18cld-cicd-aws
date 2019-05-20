@@ -5,6 +5,9 @@ until [[ -f /var/lib/cloud/instance/boot-finished ]]; do
   sleep 1
 done
 
+mkdir /home/ubuntu/.aws
+cp /tmp/config /home/ubuntu/.aws/
+
 # install nginx
 apt-get update -y
 curl -Ssl https://get.docker.com | sh
