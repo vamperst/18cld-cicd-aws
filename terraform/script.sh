@@ -17,6 +17,7 @@ name=$(cat /tmp/imagedefinitions.json | jq '.[] .name')
 imageUri=$(cat /tmp/imagedefinitions.json | jq '.[] .imageUri')
 
 
+sudo pip3 install awscli
 login=$(aws ecr get-login)
 login=$(echo $login | sed 's/-e none/ /g' | tee)
 echo $login | bash
