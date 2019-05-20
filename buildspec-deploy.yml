@@ -9,7 +9,7 @@ phases:
       - terraformImage="hashicorp/terraform:0.11.14"
       - docker pull $terraformImage
       - PROJ_NAME="$PROJETCT_NAME"
-      - mkdir terraform/.aws && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.aws/credentials terraform/.aws/
+      - mkdir terraform/.aws && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.aws/credentials terraform/.aws/ && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.aws/config terraform/.aws/
       - mkdir terraform/.ssh && aws s3 cp s3://18cld-teste-prod/test-devops-fiap/.ssh/fiap-18cld.pem terraform/.ssh/ 
   pre_build:
     commands:
