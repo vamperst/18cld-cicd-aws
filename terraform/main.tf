@@ -41,7 +41,7 @@ resource "aws_elb" "web" {
     instance_port     = 3000
     instance_protocol = "tcp"
     lb_port           = 80
-    lb_protocol       = "http"
+    lb_protocol       = "tcp"
   }
 
   health_check {
