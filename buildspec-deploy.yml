@@ -24,6 +24,7 @@ phases:
       - dockerterraform="docker run --rm -w /app  -v $PWD:/app -v $PWD/.aws:/root/.aws -v $PWD/.ssh:/root/.ssh -e PROJ_NAME=$PROJ_NAME $terraformImage"
       - $dockerterraform init 
       - $dockerterraform workspace select $STAGE || $dockerterraform workspace new $STAGE
+      - $dockerterraform destroy -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE) -auto-approve
       - $dockerterraform plan -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE)
       - $dockerterraform apply -var version=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8) -var stage=$(echo $STAGE) -auto-approve
   post_build:
