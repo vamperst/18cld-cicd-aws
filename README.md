@@ -5,8 +5,8 @@
 2. Clique em Create repository.
 3. De o nome de express-app-testing-demo-img
    ![createecr](images/createecr.png)
-4. Baixe o repositório `18cld-cicd-aws` na branch `deploy-ecr` com o comando `git clone https://github.com/vamperst/18cld-cicd-aws.git && git fetch && git checkout deploy-ecr`
-5. Entre no repositório bainxado com `cd 18cld-cicd-aws`
+4. Baixe o repositório `fiap-cicd-aws` na branch `deploy-ecr` com o comando `git clone https://github.com/vamperst/fiap-cicd-aws.git && git fetch && git checkout deploy-ecr`
+5. Entre no repositório bainxado com `cd fiap-cicd-aws`
 6. Crie um fork do repositorio para sua conta do github, ela que sera utilizada nos exemplos, não o repositório de onde baixou diretamente. Isso lhe dara mais liberdade de testes.
 7. No console AWS vá para o Serviço CodePipeline.
    ![codep](images/painelcodepipeline.png)
